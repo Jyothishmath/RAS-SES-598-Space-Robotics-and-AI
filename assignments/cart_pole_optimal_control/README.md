@@ -108,7 +108,19 @@ where:
 - Q: State cost matrix
 - R: Control cost matrix
 
-The system is linearized around the unstable equilibrium point (θ = π) for downward-starting pole configuration.
+The system is linearized around the upright equilibrium point (θ = 0). The linearized dynamics capture the local behavior of the nonlinear system near the unstable equilibrium, where the control objective is to maintain the pole in a vertical position while keeping the cart near the center of the rail.
+
+The linearized state-space model has the form:
+```
+ẋ = Ax + Bu
+```
+where A and B matrices are derived from the nonlinear equations of motion:
+```
+ẍ = (F + ml sin(θ)(θ̇² - g cos(θ)/l))/(M + m sin²(θ))
+θ̈ = (-F cos(θ) - ml θ̇² cos(θ)sin(θ) + (M+m)g sin(θ))/(l(M + m sin²(θ)))
+```
+
+The LQR controller computes optimal feedback gains K such that u = -Kx minimizes the cost function.
 
 ## Contributing
 

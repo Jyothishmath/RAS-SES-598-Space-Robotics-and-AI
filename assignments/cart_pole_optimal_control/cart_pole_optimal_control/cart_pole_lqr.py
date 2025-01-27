@@ -30,8 +30,8 @@ class CartPoleLQR(Node):
         self.update_parameters()
         
         # System state: [x, x_dot, theta, theta_dot]
-        # Initialize with pole pointing down (theta = pi)
-        self.state = np.array([0.0, 0.0, np.pi, 0.0])
+        # Initialize with pole pointing slightly off vertical
+        self.state = np.array([0.0, 0.0, 0.1, 0.0])  # Small initial angle for testing
         
         # Setup publishers for control commands
         self.cart_cmd_pub = self.create_publisher(Float64, '/cart_pole/cart_slider_cmd', 10)
@@ -68,13 +68,12 @@ class CartPoleLQR(Node):
         self.R = np.array([[self.get_parameter('R').value]])
 
     def compute_lqr_gains(self):
-        # Linearized system matrices around the downward equilibrium (theta = pi)
-        # For downward pendulum, g term changes sign
+        # Linearized system matrices around the upright equilibrium (theta = 0)
         A = np.array([
             [0, 1, 0, 0],
-            [0, 0, -self.m * self.g / self.M, 0],  # Note negative sign
+            [0, 0, self.m * self.g / self.M, 0],  # Positive g term for upright pole
             [0, 0, 0, 1],
-            [0, 0, -(self.M + self.m) * self.g / (self.M * self.L), 0]  # Note negative sign
+            [0, 0, (self.M + self.m) * self.g / (self.M * self.L), 0]  # Positive g term for upright pole
         ])
         
         B = np.array([
