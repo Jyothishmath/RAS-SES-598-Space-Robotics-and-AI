@@ -5,7 +5,7 @@
   <version>0.0.0</version>
   <description>Cart pole LQR controller with visualization</description>
   <maintainer email="jnaneshwar.das@gmail.com">jdas</maintainer>
-  <license>Apache License 2.0</license>
+  <license>Creative Commons Attribution 4.0</license>
 
   <depend>rclpy</depend>
   <depend>geometry_msgs</depend>
