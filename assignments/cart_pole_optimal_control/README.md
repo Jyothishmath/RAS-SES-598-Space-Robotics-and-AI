@@ -1,3 +1,6 @@
+![image](https://github.com/user-attachments/assets/b77c1fbb-7a51-4c9f-bc19-c43c981701d6)
+
+
 # Cart-Pole Optimal Control Assignment
 
 This ROS 2 package implements an LQR (Linear Quadratic Regulator) controller for balancing an inverted pendulum on a cart. The system demonstrates optimal control of an underactuated system, where we control only the cart's position to stabilize both the cart position and pole angle.
