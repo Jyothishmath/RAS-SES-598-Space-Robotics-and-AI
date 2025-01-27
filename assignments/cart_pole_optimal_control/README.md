@@ -98,29 +98,58 @@ ros2 param set /cart_pole_lqr R 0.5
 
 ## Theory
 
-The LQR controller minimizes the cost function:
-```
-J = ∫(x'Qx + u'Ru)dt
-```
+The LQR controller minimizes the quadratic cost function:
+
+$$ J = \int_{0}^{\infty} (x^T Q x + u^T R u) dt $$
+
 where:
-- x: State vector [x, ẋ, θ, θ̇]
-- u: Control input (force on cart)
-- Q: State cost matrix
-- R: Control cost matrix
+- $x = [x, \dot{x}, \theta, \dot{\theta}]^T$ is the state vector
+- $u$ is the control input (force on cart)
+- $Q \in \mathbb{R}^{4\times4}$ is the state cost matrix
+- $R \in \mathbb{R}$ is the control cost scalar
 
-The system is linearized around the upright equilibrium point (θ = 0). The linearized dynamics capture the local behavior of the nonlinear system near the unstable equilibrium, where the control objective is to maintain the pole in a vertical position while keeping the cart near the center of the rail.
+The nonlinear equations of motion for the cart-pole system are:
 
-The linearized state-space model has the form:
-```
-ẋ = Ax + Bu
-```
-where A and B matrices are derived from the nonlinear equations of motion:
-```
-ẍ = (F + ml sin(θ)(θ̇² - g cos(θ)/l))/(M + m sin²(θ))
-θ̈ = (-F cos(θ) - ml θ̇² cos(θ)sin(θ) + (M+m)g sin(θ))/(l(M + m sin²(θ)))
-```
+$$ \ddot{x} = \frac{F + ml\sin(\theta)(\dot{\theta}^2 - \frac{g}{l}\cos(\theta))}{M + m\sin^2(\theta)} $$
 
-The LQR controller computes optimal feedback gains K such that u = -Kx minimizes the cost function.
+$$ \ddot{\theta} = \frac{-F\cos(\theta) - ml\dot{\theta}^2\cos(\theta)\sin(\theta) + (M+m)g\sin(\theta)}{l(M + m\sin^2(\theta))} $$
+
+where:
+- $M$ is the cart mass
+- $m$ is the pole mass
+- $l$ is the pole length
+- $g$ is the gravitational acceleration
+- $F$ is the applied force
+
+The system is linearized around the unstable equilibrium point $\theta = 0$ (upright position). For small deviations from vertical, $\sin(\theta) \approx \theta$ and $\cos(\theta) \approx 1$, giving the linear state-space model:
+
+$$ \dot{x} = Ax + Bu $$
+
+where:
+
+$$ A = \begin{bmatrix} 
+0 & 1 & 0 & 0 \\
+0 & 0 & \frac{mg}{M} & 0 \\
+0 & 0 & 0 & 1 \\
+0 & 0 & \frac{(M+m)g}{Ml} & 0
+\end{bmatrix} $$
+
+$$ B = \begin{bmatrix}
+0 \\
+\frac{1}{M} \\
+0 \\
+-\frac{1}{Ml}
+\end{bmatrix} $$
+
+The LQR controller computes optimal feedback gains $K$ such that $u = -Kx$ minimizes the cost function. The resulting closed-loop system is:
+
+$$ \dot{x} = (A - BK)x $$
+
+The gain matrix $K$ is computed by solving the algebraic Riccati equation:
+
+$$ A^T P + PA - PBR^{-1}B^T P + Q = 0 $$
+
+where $P$ is the solution to the Riccati equation and $K = R^{-1}B^T P$.
 
 ## Contributing
 
