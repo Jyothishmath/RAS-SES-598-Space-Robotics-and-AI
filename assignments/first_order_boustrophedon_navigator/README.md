@@ -1,208 +1,155 @@
-# First-Order Boustrophedon Navigator
-![image](https://github.com/user-attachments/assets/940fc6bc-fcee-4d11-8bc8-d53a650aaf80)
+# Boustrophedon Pattern with PD Controller
 
-In this assignment, you will understand the provided code in ROS2 with Turtlesim, and refactor and/or tune the navigator to implement a precise lawnmower survey (a boustrophedon pattern). The current code will do a pattern shown above, which is not a uniform lawnmower survey. 
-Explore literature on how lawnmower surveys typically look, and modify the code to meet the requirements for a uniform survey. 
+# SETTING UP THE PROJECT - 
 
-## Background
-Boustrophedon patterns (from Greek: "ox-turning", like an ox drawing a plow) are fundamental coverage survey trajectories useful in space exploration and Earth observation. These patterns are useful for:
+Step 1: Fork and Clone the Repository
 
-- **Space Exploration**: Rovers could use boustrophedon patterns to systematically survey areas of interest, ensuring complete coverage when searching for geological samples or mapping terrain. However, due to energy constraints, informative paths are usually optimized, and this results in paths that are sparser than complete coverage sampling, and may still produce high-accuracy reconstructions. 
-  
-- **Earth Observation**: Aerial vehicles employ these patterns for:
-  - Agricultural monitoring and precision farming
-  - Search and rescue operations
-  - Environmental mapping and monitoring
-  - Geological or archaeological surveys
-  
-- **Ocean Exploration**: Autonomous underwater vehicles (AUVs) use boustrophedon patterns to:
-  - Map the ocean floor
-  - Search for shipwrecks or aircraft debris
-  - Monitor marine ecosystems
-  
-The efficiency and accuracy of these surveys depend heavily on the robot's ability to follow the prescribed path with minimal deviation (cross-track error). This assignment simulates these real-world challenges in a 2D environment using a first-order dynamical system (the turtlesim robot).
+Since the assignment is hosted in a GitHub repository, started by forking it:
 
-## Objective
-Tune a PD controller to make a first-order system execute the most precise boustrophedon pattern possible. The goal is to minimize the cross-track error while maintaining smooth motion.
+    DREAMS-lab/RAS-SES-598-Space-Robotics-and-AI.
+    Click Fork (top-right) to create a personal copy of the repository.
+    Cloned the forked repository:
+    git clone https://github.com/YOUR_USERNAME/RAS-SES-598-Space-Robotics-and-AI.git
 
-## Learning Outcomes
-- Understanding PD control parameters and their effects on first-order systems
-- Practical experience with controller tuning
-- Analysis of trajectory tracking performance
-- ROS2 visualization and debugging
 
-## Prerequisites
+Step 2: Setting up the ROS2 Environment
 
-### System Requirements
-Choose one of the following combinations:
-- Ubuntu 22.04 + ROS2 Humble
-- Ubuntu 23.04 + ROS2 Iron
-- Ubuntu 23.10 + ROS2 Iron
-- Ubuntu 24.04 + ROS2 Jazzy
+Since I already installed ROS2(Humble) proceeding to create a symlink -
 
-### Required Packages
-```bash
-sudo apt install ros-$ROS_DISTRO-turtlesim
-sudo apt install ros-$ROS_DISTRO-rqt*
-```
+    cd ~/ros2_ws/src
+    ln -s ~/RAS-SES-598-Space-Robotics-and-AI/assignments/first_order_boustrophedon_navigator 
 
-### Python Dependencies
-```bash
-pip3 install numpy matplotlib
-```
 
-## The Challenge
+Step 3: Building the package-
+         
+    colcon build --packages-select first_order_boustrophedon_navigator
+    
+    source install/setup.bash
 
-### 1. Controller Tuning (60 points)
-Use rqt_reconfigure to tune the following PD controller parameters in real-time:
-```python
-# Controller parameters to tune
-self.Kp_linear = 1.0   # Proportional gain for linear velocity
-self.Kd_linear = 0.1   # Derivative gain for linear velocity
-self.Kp_angular = 1.0  # Proportional gain for angular velocity
-self.Kd_angular = 0.1  # Derivative gain for angular velocity
-```
+This documentation provides an overview of the tuning process, performance analysis, and lessons learned.
 
-Performance Metrics:
-- Average cross-track error (25 points)
-- Maximum cross-track error (15 points)
-- Smoothness of motion (10 points)
-- Cornering performance (10 points)
+## Tuning Process
 
-### 2. Pattern Parameters (20 points)
-Optimize the boustrophedon pattern parameters:
-```python
-# Pattern parameters to tune
-self.spacing = 1.0     # Spacing between lines
-```
-- Coverage efficiency (10 points)
-- Pattern completeness (10 points)
+### Initial Parameters
+The initial parameters were:
+- `Kp_linear = 1.0`
+- `Kd_linear = 0.0`
+- `Kp_angular = 2.0`
+- `Kd_angular = 0.0`
 
-### 3. Analysis and Documentation (20 points)
-Provide a detailed analysis of your tuning process:
-- Methodology used for tuning
-- Performance plots and metrics
-- Challenges encountered and solutions
-- Comparison of different parameter sets
+These values caused:
+- Significant overshooting while following straight lines.
+- Unstable turning behavior at corners.
 
-## Getting Started
+## Final PD Controller Parameters
 
-### Repository Setup
-1. Fork the course repository:
-   - Visit: https://github.com/DREAMS-lab/RAS-SES-598-Space-Robotics-and-AI
-   - Click "Fork" in the top-right corner
-   - Select your GitHub account as the destination
+The following parameters were used after tuning:
+- **Kp_linear:** 1.2  
+  - Justification: Improves straight-line tracking performance without overshooting.
+- **Kd_linear:** 0.03  
+  - Justification: Reduces oscillations in velocity for smoother motion.
+- **Kp_angular:** 7.0  
+  - Justification: Ensures sharper turns and precise cornering.
+- **Kd_angular:** 0.03  
+  - Justification: Damps angular overshooting during turns.
+- **Spacing:** 1.2  
+  - Justification: Achieves even coverage while balancing efficiency.
 
-2. Clone your fork (outside of ros2_ws):
-```bash
-cd ~/
-git clone https://github.com/YOUR_USERNAME/RAS-SES-598-Space-Robotics-and-AI.git
-```
 
-3. Create a symlink to the assignment in your ROS2 workspace:
-```bash
-cd ~/ros2_ws/src
-ln -s ~/RAS-SES-598-Space-Robotics-and-AI/assignments/first_order_boustrophedon_navigator .
-```
+### Final Tuned Parameters
+The final parameters were:
+- `Kp_linear = 1.2`
+- `Kd_linear = 0.03`
+- `Kp_angular = 7.0`
+- `Kd_angular = 0.03`
+- `spacing = 1.2`
 
-### Building and Running
-1. Build the package:
-```bash
-cd ~/ros2_ws
-colcon build --packages-select first_order_boustrophedon_navigator
-source install/setup.bash
-```
+This project aims to implement a boustrophedon motion pattern using a TurtleBot in ROS2. The primary objective was to tune a PD controller to minimize the cross-track error while ensuring smooth motion and efficient area coverage. The final tuned parameters allowed the robot to achieve:
+- **Average Cross-Track Error:** 0.112 units
+- **Maximum Cross-Track Error:** 0.297 units
+  ![Screenshot from 2025-01-27 20-19-32](https://github.com/user-attachments/assets/fc1fc4f4-b904-4500-8b9b-ed65c76dc7b0)
 
-2. Launch the demo:
-```bash
-ros2 launch first_order_boustrophedon_navigator boustrophedon.launch.py
-```
+# Plotting Values -
+Graphs for -
 
-3. Monitor performance:
-```bash
-# View cross-track error as a number
-ros2 topic echo /cross_track_error
+    /turtle1/pose/x
+    /turtle1/pose/y
+    /turtle1/cmd_vel/linear/x
+    /turtle1/cmd_vel/angular/z
+    /cross_track_error
 
-# Or view detailed statistics in the launch terminal
-```
+### Trajectory Visualization
+The TurtleSim trajectory shows a clean boustrophedon pattern with even line spacing and efficient coverage.
+![Screenshot from 2025-01-27 20-19-15](https://github.com/user-attachments/assets/c8baddd1-12cd-4a0b-8ca4-f5317ec2c832)
 
-4. Visualize trajectory and performance:
-```bash
-ros2 run rqt_plot rqt_plot
-```
-Add these topics:
-- /turtle1/pose/x
-- /turtle1/pose/y
-- /turtle1/cmd_vel/linear/x
-- /turtle1/cmd_vel/angular/z
-- /cross_track_error
+### Velocity Profiles
+Velocity profiles illustrate how the TurtleBot's linear and angular velocities change over time during the simulation. These profiles are crucial for understanding the robot's movement dynamics, such as how smoothly it accelerates, maintains speed, and decelerates.
+![Screenshot from 2025-01-27 20-20-05](https://github.com/user-attachments/assets/6ca93661-a728-4216-b8ff-4e12aa910da7)
+![Screenshot from 2025-01-27 20-20-18](https://github.com/user-attachments/assets/e61bf146-80fb-42c4-997b-498cb9474801)
 
-## Evaluation Criteria
+### Cross Track Error over time
+Cross-track error (CTE) measures the lateral deviation of the TurtleBot from the desired trajectory. It is a critical metric to evaluate how well the robot follows the planned path.
 
-1. Controller Performance (60%)
-   - Average cross-track error < 0.2 units (25%)
-   - Maximum cross-track error < 0.5 units (15%)
-   - Smooth velocity profiles (10%)
-   - Clean cornering behavior (10%)
+In this project, minimizing cross-track error was a primary objective. A low average CTE indicates the robot stayed close to the desired trajectory, while a low maximum CTE ensures that deviations were controlled even in challenging turns or transitions.
+![Screenshot from 2025-01-27 20-35-39](https://github.com/user-attachments/assets/580a2b16-04b6-4e16-8bea-cb70d87afb57)
 
-2. Pattern Quality (20%)
-   - Even spacing between lines
-   - Complete coverage of target area
-   - Efficient use of space
+### TurtleBot1 Pose (X and Y)
 
-3. Documentation (20%)
-   - Clear explanation of tuning process
-   - Well-presented performance metrics
-   - Thoughtful analysis of results
+The TurtleBot1 pose represents the robot's position in the simulation environment. It includes two key coordinates:
 
-## Submission Requirements
+    X: The horizontal position of the TurtleBot along the X-axis.
+    Y: The vertical position of the TurtleBot along the Y-axis.
+ ![Screenshot from 2025-01-27 20-41-37](https://github.com/user-attachments/assets/76fad584-0570-490a-a1e2-743f20d399d3)
 
-1. GitHub Repository:
-   - Commit messages should be descriptive
+### Challenges and Solutions
 
-2. Documentation in Repository:
-   - Update the README.md in your fork with:
-     - Final parameter values with justification
-     - Performance metrics and analysis
-     - Plots showing:
-       - Cross-track error over time
-       - Trajectory plot
-       - Velocity profiles
-     - Discussion of tuning methodology
-     - Challenges and solutions
+Challenge 1: Overshooting in Straight Lines
 
-3. Submit your work:
-   - Submit the URL of your GitHub repository
-   - Ensure your repository is public
-   - Final commit should be before the deadline
+    Problem: Initially, the robot was overshooting the desired trajectory, especially in straight-line segments. The robot would move too fast and then oscillate back and forth trying to correct itself.
+    Solution:
+        Reduced Kp_linear to avoid excessive acceleration.
+        Introduced Kd_linear to dampen oscillations and create smoother corrections.
+        The final tuning helped the robot stay closer to the desired trajectory without excessive corrections.
 
-## Tips for Success
-- Start with low gains and increase gradually
-- Test one parameter at a time
-- Pay attention to both straight-line tracking and cornering
-- Use rqt_plot to visualize performance in real-time
-- Consider the trade-off between speed and accuracy
+Challenge 2: Poor Cornering Performance
 
-## Grading Rubric
-- Perfect tracking (cross-track error < 0.2 units): 100%
-- Good tracking (cross-track error < 0.5 units): 90%
-- Acceptable tracking (cross-track error < 0.8 units): 80%
-- Poor tracking (cross-track error > 0.8 units): 60% or lower
+    Problem: The robot struggled to make sharp turns and often deviated significantly at waypoints.
+    Solution:
+        Increased Kp_angular to make the robot turn more aggressively at waypoints.
+        Adjusted Kd_angular to prevent excessive angular corrections.
+        These adjustments improved cornering behavior, reducing drift and ensuring the robot transitioned smoothly between rows.
 
-Note: Final grade will also consider documentation quality and analysis depth.
+Challenge 3: Uneven Coverage of the Target Area
 
-## Extra Credit (10 points)
-Create and implement a custom ROS2 message type to publish detailed performance metrics:
-- Define a custom message type with fields for:
-  - Cross-track error
-  - Current velocity
-  - Distance to next waypoint
-  - Completion percentage
-  - Other relevant metrics
-- Implement the message publisher in your node
-- Document the message structure and usage
+    Problem: The spacing between adjacent rows in the boustrophedon pattern was inconsistent, leading to inefficient coverage.
+    Solution:
+        Adjusted the spacing parameter to optimize coverage.
+        Tuned Kp_linear to control speed and ensure the robot reached waypoints without excessive deviation.
+        This led to a more uniform pattern with even spacing between rows.
 
-This will demonstrate understanding of:
-- ROS2 message definitions
-- Custom interface creation
-- Message publishing patterns 
+### Step-by-Step Parameter Adjustments
+
+    Initial Values (Kp_linear = 1.0, Kd_linear = 0.0, Kp_angular = 2.0, Kd_angular = 0.0)
+        Observation:
+            The robot oscillated significantly in straight lines.
+            Cornering was slow, causing the robot to take wide turns.
+        Reason for Change:
+            Introduced Kd_linear to reduce oscillations and overshooting.
+            Increased Kp_angular to make turns sharper.
+
+    Second Iteration (Kp_linear = 1.2, Kd_linear = 0.03, Kp_angular = 5.0, Kd_angular = 0.08)
+        Observation:
+            The robot followed straight paths more accurately.
+            Turns were sharper, but there was still some instability in transitions.
+        Reason for Change:
+            Reduced Kd_angular to smooth out transitions.
+            Slightly increased Kd_linear for finer straight-line corrections.
+
+    Final Values (Kp_linear = 1.2, Kd_linear = 0.03, Kp_angular = 7.0, Kd_angular = 0.03)
+        Observation:
+            The cross-track error was minimized (~0.1 units on average).
+            The robot moved smoothly with controlled speed and cornering.
+            The boustrophedon pattern had even coverage.
+        Final Adjustment:
+            Increased Kp_angular further to refine cornering.
+            Balanced Kd_linear and Kd_angular for minimal oscillations.
