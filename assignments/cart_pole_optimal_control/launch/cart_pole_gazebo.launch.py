@@ -42,14 +42,14 @@ def generate_launch_description():
             'gravity': 9.81,     # Gravity constant in m/s^2
             
             # LQR cost weights
-            'Q_x': 1000.0,       # Position error cost - reduced to be less dominant
-            'Q_x_dot': 100.0,    # Velocity cost - reduced for smoother motion
-            'Q_theta': 5000.0,   # Angle error cost - increased to prioritize vertical pole
-            'Q_theta_dot': 500.0, # Angular velocity cost - increased for better pole damping
-            'R': 0.01,           # Control cost - slightly increased for smoother control
+            'Q_x': 1000.0,       # Position error cost
+            'Q_x_dot': 100.0,    # Velocity cost for damping
+            'Q_theta': 2000.0,   # Angle error cost
+            'Q_theta_dot': 200.0, # Angular velocity cost
+            'R': 1.0,           # Increased to get reasonable forces
             
             # Control limits
-            'force_limit': 200.0  # Maximum force in Newtons
+            'force_limit': 20.0  # Maximum force in Newtons - reasonable for 1kg cart
         }]
     )
     

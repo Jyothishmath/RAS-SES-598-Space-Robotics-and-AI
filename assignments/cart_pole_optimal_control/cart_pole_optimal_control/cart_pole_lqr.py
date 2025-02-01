@@ -144,7 +144,7 @@ class CartPoleLQR(Node):
             # Apply saturation limits
             u_saturated = np.clip(u[0], -self.u_max, self.u_max)
             
-            # Log control and state information more frequently
+            # Log control and state information
             self.get_logger().info(
                 f'Position: {self.state[0]:.2f}m, '
                 f'Force: {u_saturated:.2f}N, '
@@ -162,16 +162,9 @@ class CartPoleLQR(Node):
     def parameter_callback(self, params):
         try:
             for param in params:
-                if param.name in ['mass_cart', 'mass_pole', 'pole_length', 'gravity', 
-                                'Q_x', 'Q_x_dot', 'Q_theta', 'Q_theta_dot', 'R', 'force_limit']:
-                    # Validate parameter ranges
-                    if param.name == 'mass_cart' and not (0.1 <= param.value <= 10.0):
-                        raise ValueError(f'Invalid mass_cart value: {param.value}')
-                    elif param.name == 'mass_pole' and not (0.01 <= param.value <= 1.0):
-                        raise ValueError(f'Invalid mass_pole value: {param.value}')
-                    elif param.name == 'pole_length' and not (0.1 <= param.value <= 2.0):
-                        raise ValueError(f'Invalid pole_length value: {param.value}')
-                    
+                if param.name in ['mass_cart', 'mass_pole', 'pole_length', 'gravity',
+                                'Q_x', 'Q_x_dot', 'Q_theta', 'Q_theta_dot', 'R',
+                                'force_limit']:
                     self.update_parameters()
                     self.compute_lqr_gains()
             return True
