@@ -35,13 +35,21 @@ def generate_launch_description():
         name='cart_pole_lqr',
         output='screen',
         parameters=[{
-            'mass_cart': 1.0,
-            'mass_pole': 0.1,
-            'pole_length': 1.0,
-            'gravity': 9.81,
-            'Q_x': 1.0,
-            'Q_theta': 10.0,
-            'R': 1.0,
+            # Physical parameters
+            'mass_cart': 1.0,    # Mass of the cart in kg
+            'mass_pole': 0.1,    # Mass of the pole in kg
+            'pole_length': 1.0,  # Length of the pole in meters
+            'gravity': 9.81,     # Gravity constant in m/s^2
+            
+            # LQR cost weights
+            'Q_x': 1000.0,       # Position error cost - reduced to be less dominant
+            'Q_x_dot': 100.0,    # Velocity cost - reduced for smoother motion
+            'Q_theta': 5000.0,   # Angle error cost - increased to prioritize vertical pole
+            'Q_theta_dot': 500.0, # Angular velocity cost - increased for better pole damping
+            'R': 0.01,           # Control cost - slightly increased for smoother control
+            
+            # Control limits
+            'force_limit': 200.0  # Maximum force in Newtons
         }]
     )
     
@@ -54,12 +62,12 @@ def generate_launch_description():
             '/world/empty/clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock',
             # Joint state bridge
             '/world/empty/model/cart_pole/joint_state@sensor_msgs/msg/JointState[gz.msgs.Model',
-            # Command bridge for cart only
-            '/model/cart_pole/joint/cart_slider/cmd_vel@std_msgs/msg/Float64]gz.msgs.Double'
+            # Command bridge for cart - changed to force command
+            '/model/cart_pole/joint/cart_slider/cmd_force@std_msgs/msg/Float64]gz.msgs.Double'
         ],
         remappings=[
             ('/world/empty/model/cart_pole/joint_state', '/cart_pole/joint_states'),
-            ('/model/cart_pole/joint/cart_slider/cmd_vel', '/cart_pole/cart_slider_cmd'),
+            ('/model/cart_pole/joint/cart_slider/cmd_force', '/cart_pole/cart_slider_cmd'),
         ],
         output='screen'
     )
