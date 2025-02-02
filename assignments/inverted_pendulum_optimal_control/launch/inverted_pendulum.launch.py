@@ -59,5 +59,18 @@ def generate_launch_description():
             executable='lqr_controller',
             name='lqr_controller',
             output='screen'
+        ),
+
+        # Earthquake Force Generator
+        Node(
+            package='inverted_pendulum_optimal_control',
+            executable='earthquake_force_generator',
+            name='earthquake_force_generator',
+            output='screen',
+            parameters=[{
+                'base_amplitude': 5.0,  # Base force amplitude in Newtons
+                'frequency_range': [0.5, 2.0],  # Frequency range in Hz
+                'update_rate': 50.0  # Update rate in Hz
+            }]
         )
     ]) 

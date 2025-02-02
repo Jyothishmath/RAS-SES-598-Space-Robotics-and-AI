@@ -27,6 +27,7 @@ setup(
     entry_points={
         'console_scripts': [
             'lqr_controller = inverted_pendulum_optimal_control.lqr_controller:main',
+            'earthquake_force_generator = inverted_pendulum_optimal_control.earthquake_force_generator:main',
         ],
     },
 )
