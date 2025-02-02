@@ -96,6 +96,14 @@ def generate_launch_description():
             }]
         ),
 
+        # State Plotter
+        Node(
+            package='inverted_pendulum_optimal_control',
+            executable='state_plotter',
+            name='state_plotter',
+            output='screen'
+        ),
+
         # RViz
         Node(
             package='rviz2',

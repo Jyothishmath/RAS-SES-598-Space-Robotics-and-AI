@@ -9,6 +9,8 @@ Panels:
         - /RobotModel1
         - /TF1
         - /Marker1
+        - /State Plots1
+        - /Force Plots1
       Splitter Ratio: 0.5
     Tree Height: 549
   - Class: rviz_common/Selection
@@ -126,6 +128,30 @@ Visualization Manager:
         Reliability Policy: Reliable
         Value: /force_marker
       Value: true
+    - Class: rviz_default_plugins/MarkerArray
+      Enabled: true
+      Name: State Plots
+      Namespaces:
+        state: true
+      Topic:
+        Depth: 5
+        Durability Policy: Volatile
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Value: /state_plots
+      Value: true
+    - Class: rviz_default_plugins/MarkerArray
+      Enabled: true
+      Name: Force Plots
+      Namespaces:
+        force: true
+      Topic:
+        Depth: 5
+        Durability Policy: Volatile
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Value: /force_plots
+      Value: true
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
@@ -168,22 +194,22 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz_default_plugins/Orbit
-      Distance: 5
+      Distance: 8.0
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: 0
-        Y: 0
-        Z: 0
+        X: 0.0
+        Y: 1.0
+        Z: 2.5
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.3
+      Pitch: 0.5
       Target Frame: world
       Value: Orbit (rviz)
-      Yaw: 0 
+      Yaw: -1.5707963267948966  # -pi/2 to look along Y axis 

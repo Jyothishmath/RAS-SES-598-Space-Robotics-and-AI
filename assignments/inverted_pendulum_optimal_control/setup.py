@@ -31,6 +31,7 @@ setup(
             'earthquake_force_generator = inverted_pendulum_optimal_control.earthquake_force_generator:main',
             'force_visualizer = inverted_pendulum_optimal_control.force_visualizer:main',
             'state_republisher = inverted_pendulum_optimal_control.state_republisher:main',
+            'state_plotter = inverted_pendulum_optimal_control.state_plotter:main',
         ],
     },
 )
