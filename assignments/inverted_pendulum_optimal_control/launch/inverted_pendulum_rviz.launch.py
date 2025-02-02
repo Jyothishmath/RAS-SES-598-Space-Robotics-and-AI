@@ -90,9 +90,9 @@ def generate_launch_description():
             name='earthquake_force_generator',
             output='screen',
             parameters=[{
-                'base_amplitude': 5.0,  # Base force amplitude in Newtons
-                'frequency_range': [0.5, 2.0],  # Frequency range in Hz
-                'update_rate': 50.0  # Update rate in Hz
+                'base_amplitude': 15.0,  # Increased from 5.0N to 15.0N
+                'frequency_range': [0.5, 4.0],  # Increased upper frequency to 4.0 Hz
+                'update_rate': 50.0  # Keep update rate the same
             }]
         ),
 

@@ -107,6 +107,39 @@ cd ~/ros2_ws
 colcon build --packages-select inverted_pendulum_optimal_control
 ```
 
+### Branch Information
+- `main`: Primary development branch with:
+  * Basic LQR controller (requires tuning)
+  * Strong earthquake disturbances
+  * Force visualization (control and disturbance forces)
+  * Side-view RViz configuration
+  * Intentionally challenging default parameters
+
+- `baseline`: Backup branch with verified working implementation
+  * Use this as reference if needed
+  * Contains stable parameters and tuned controller
+  * Maintained by instructors
+
+For extra credit implementations, create new branches from `main`.
+
+### Default Parameters
+The main branch comes with intentionally challenging parameters to encourage proper controller tuning:
+
+1. Earthquake Disturbances:
+   ```python
+   parameters=[{
+       'base_amplitude': 15.0,    # Strong force amplitude (N)
+       'frequency_range': [0.5, 4.0],  # Wide frequency range (Hz)
+       'update_rate': 50.0  # Update rate (Hz)
+   }]
+   ```
+   These parameters create significant disturbances that the default controller may struggle with.
+
+2. LQR Controller:
+   * Default gains need tuning
+   * System will be unstable without proper adjustment
+   * Students should systematically tune Q and R matrices
+
 ### Running the Simulation
 ```bash
 # Source ROS2
