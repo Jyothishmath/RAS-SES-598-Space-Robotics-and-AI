@@ -112,14 +112,7 @@ colcon build --packages-select inverted_pendulum_optimal_control
 # Source ROS2
 source ~/ros2_ws/install/setup.bash
 
-# Launch the simulation with controller and earthquake generator
-ros2 launch inverted_pendulum_optimal_control inverted_pendulum.launch.py
-```
-
-### Visualization
-You can visualize the simulation in RViz with force visualization using:
-```bash
-# Launch RViz visualization with headless Gazebo simulation
+# Launch the simulation with visualization
 ros2 launch inverted_pendulum_optimal_control inverted_pendulum_rviz.launch.py
 ```
 
