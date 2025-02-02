@@ -97,6 +97,24 @@ The earthquake generator (`earthquake_force_generator.py`) provides realistic di
 - Python 3.8+
 - Required Python packages: numpy, scipy
 
+#### Installation Commands
+```bash
+# Set ROS_DISTRO
+export ROS_DISTRO=humble
+
+# Install ROS2 packages
+sudo apt update
+sudo apt install -y \
+    ros-$ROS_DISTRO-ros-gz-bridge \
+    ros-$ROS_DISTRO-ros-gz-sim \
+    ros-$ROS_DISTRO-ros-gz-interfaces \
+    ros-$ROS_DISTRO-robot-state-publisher \
+    ros-$ROS_DISTRO-rviz2
+
+# Install Python dependencies
+pip3 install numpy scipy control
+```
+
 ### Installation
 ```bash
 # Clone the repository
