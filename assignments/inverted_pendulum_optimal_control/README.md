@@ -46,25 +46,15 @@ The system includes an earthquake force generator that introduces external distu
 - Practical experience with ROS2 and Gazebo simulation
 
 ### Extra Credit Options
-Students can implement reinforcement learning approaches for extra credit:
+Students can implement reinforcement learning for extra credit (up to 30 points):
 
-1. Basic RL Implementation (up to 15 points):
+1. Reinforcement Learning Implementation:
    - Implement a basic DQN (Deep Q-Network) controller
    - Train the agent to stabilize the pendulum
    - Compare performance with the LQR controller
    - Document training process and results
-
-2. Advanced RL Features (up to 10 points):
-   - Implement experience replay
-   - Add target network updates
-   - Use prioritized experience replay
-   - Implement continuous action space (e.g., DDPG, SAC)
-
-3. RL Analysis and Visualization (up to 5 points):
    - Create training progress visualizations
-   - Analyze learning curves
-   - Compare different hyperparameter settings
-   - Visualize learned Q-values or policy
+   - Analyze and compare performance with LQR
 
 ## Implementation
 
@@ -199,9 +189,7 @@ Students should analyze:
    - Thoroughness of discussion
 
 ### Extra Credit (up to 30 points)
-- Basic RL Implementation (15 points)
-- Advanced RL Features (10 points)
-- RL Analysis and Visualization (5 points)
+- Reinforcement Learning Implementation (30 points)
 
 ## Tips for Success
 1. Start with understanding the existing controller behavior
