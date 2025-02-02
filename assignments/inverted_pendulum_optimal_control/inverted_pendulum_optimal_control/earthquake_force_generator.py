@@ -24,6 +24,13 @@ class EarthquakeForceGenerator(Node):
             qos_profile
         )
         
+        # Publisher for force visualization
+        self.viz_publisher = self.create_publisher(
+            Float64,
+            '/earthquake_force',
+            qos_profile
+        )
+        
         # Parameters for earthquake simulation
         self.declare_parameter('base_amplitude', 5.0)  # Base force amplitude in N
         self.declare_parameter('frequency_range', [0.5, 2.0])  # Frequency range in Hz
@@ -58,10 +65,11 @@ class EarthquakeForceGenerator(Node):
         # Add some random noise
         force += np.random.normal(0, base_amplitude * 0.1)
         
-        # Create and publish the force message
+        # Create and publish the force messages
         msg = Float64()
         msg.data = float(force)
         self.force_publisher.publish(msg)
+        self.viz_publisher.publish(msg)  # Publish the same force for visualization
 
 def main(args=None):
     rclpy.init(args=args)

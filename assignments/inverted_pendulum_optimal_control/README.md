@@ -120,17 +120,35 @@ This will start:
 - Gazebo simulation in headless mode
 - RViz visualization with:
   * Cart-pole system visualization
-  * Force arrows showing control and disturbance forces
+  * Force arrows showing both control and disturbance forces
   * TF frames for system state
 - LQR controller
 - Earthquake force generator
 - Force visualizer
 
-The visualization includes:
-- Red arrows for positive forces
-- Blue arrows for negative forces
-- Real-time cart position and pole angle updates
+### Visualization Details
+The RViz view shows a side perspective of the cart-pole system with force visualizations:
+
+#### Force Arrows
+Two types of forces are visualized:
+1. Control Forces (at cart level):
+   - Red arrows: Positive control force (pushing right)
+   - Blue arrows: Negative control force (pushing left)
+
+2. Earthquake Disturbances (slightly above cart):
+   - Orange arrows: Positive disturbance force (pushing right)
+   - Purple arrows: Negative disturbance force (pushing left)
+
+The arrow length is proportional to the force magnitude.
+
+#### RViz View Settings
+- Side view perspective (looking along Y-axis)
+- Clean interface with only 3D viewport visible
 - Grid for reference
+- Cart-pole system with:
+  * Blue base platform (5m long)
+  * Red cart
+  * Blue pole
 
 ### Tuning Parameters
 1. Controller parameters can be adjusted in the LQR implementation
