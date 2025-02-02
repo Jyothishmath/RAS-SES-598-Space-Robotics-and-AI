@@ -46,23 +46,25 @@ The system includes an earthquake force generator that introduces external distu
 - Practical experience with ROS2 and Gazebo simulation
 
 ### Extra Credit Options
-Students can explore more advanced approaches for extra credit:
+Students can implement reinforcement learning approaches for extra credit:
 
-1. Advanced Analysis (up to 15 points):
-   - Frequency domain analysis of disturbance rejection
-   - Robustness margin calculations
-   - Comparative analysis with different Q and R matrices
-   - Stability region analysis
+1. Basic RL Implementation (up to 15 points):
+   - Implement a basic DQN (Deep Q-Network) controller
+   - Train the agent to stabilize the pendulum
+   - Compare performance with the LQR controller
+   - Document training process and results
 
-2. System Modifications (up to 10 points):
-   - Modify system parameters (masses, lengths) and analyze effects
-   - Add additional disturbance types
-   - Implement state estimation with noise
+2. Advanced RL Features (up to 10 points):
+   - Implement experience replay
+   - Add target network updates
+   - Use prioritized experience replay
+   - Implement continuous action space (e.g., DDPG, SAC)
 
-3. Visualization and Data Analysis (up to 5 points):
-   - Create additional visualization tools
-   - Implement performance metrics plotting
-   - Add real-time state analysis tools
+3. RL Analysis and Visualization (up to 5 points):
+   - Create training progress visualizations
+   - Analyze learning curves
+   - Compare different hyperparameter settings
+   - Visualize learned Q-values or policy
 
 ## Implementation
 
@@ -197,9 +199,9 @@ Students should analyze:
    - Thoroughness of discussion
 
 ### Extra Credit (up to 30 points)
-- Advanced Analysis (15 points)
-- System Modifications (10 points)
-- Visualization Tools (5 points)
+- Basic RL Implementation (15 points)
+- Advanced RL Features (10 points)
+- RL Analysis and Visualization (5 points)
 
 ## Tips for Success
 1. Start with understanding the existing controller behavior
