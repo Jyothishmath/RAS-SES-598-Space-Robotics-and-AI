@@ -115,53 +115,56 @@ sudo apt install -y \
 pip3 install numpy scipy control
 ```
 
-### Installation
+### Repository Setup
 
-#### Repository Setup
-1. If you haven't already, fork the course repository:
+#### If you already have a fork of the course repository:
+```bash
+# Navigate to your local copy of the repository
+cd ~/RAS-SES-598-Space-Robotics-and-AI
+
+# Add the original repository as upstream (if not already done)
+git remote add upstream https://github.com/DREAMS-lab/RAS-SES-598-Space-Robotics-and-AI.git
+
+# Fetch the latest changes from upstream
+git fetch upstream
+
+# Checkout your main branch
+git checkout main
+
+# Merge upstream changes
+git merge upstream/main
+
+# Push the updates to your fork
+git push origin main
+```
+
+#### If you don't have a fork yet:
+1. Fork the course repository:
    - Visit: https://github.com/DREAMS-lab/RAS-SES-598-Space-Robotics-and-AI
    - Click "Fork" in the top-right corner
    - Select your GitHub account as the destination
 
-2. If you already have a fork:
-   ```bash
-   # Navigate to your local copy of the course repository
-   cd ~/RAS-SES-598-Space-Robotics-and-AI
-   
-   # Add the upstream remote if you haven't already
-   git remote add upstream https://github.com/DREAMS-lab/RAS-SES-598-Space-Robotics-and-AI.git
-   
-   # Fetch and merge updates from the main repository
-   git fetch upstream
-   git checkout main
-   git merge upstream/main
-   ```
+2. Clone your fork:
+```bash
+cd ~/
+git clone https://github.com/YOUR_USERNAME/RAS-SES-598-Space-Robotics-and-AI.git
+```
 
-   If you don't have a local copy yet:
-   ```bash
-   # Clone your fork (outside of ros2_ws)
-   cd ~/
-   git clone https://github.com/YOUR_USERNAME/RAS-SES-598-Space-Robotics-and-AI.git
-   ```
+### Create Symlink to ROS2 Workspace
+```bash
+# Create symlink in your ROS2 workspace
+cd ~/ros2_ws/src
+ln -s ~/RAS-SES-598-Space-Robotics-and-AI/assignments/cart_pole_optimal_control .
+```
 
-3. Create a symlink to the assignment in your ROS2 workspace:
-   ```bash
-   cd ~/ros2_ws/src
-   ln -s ~/RAS-SES-598-Space-Robotics-and-AI/assignments/cart_pole_optimal_control .
-   ```
-
-#### Building the Package
+### Building and Running
 ```bash
 # Build the package
 cd ~/ros2_ws
 colcon build --packages-select cart_pole_optimal_control --symlink-install
-source install/setup.bash
-```
 
-### Running the Simulation
-```bash
-# Source ROS2
-source ~/ros2_ws/install/setup.bash
+# Source the workspace
+source install/setup.bash
 
 # Launch the simulation with visualization
 ros2 launch cart_pole_optimal_control cart_pole_rviz.launch.py
