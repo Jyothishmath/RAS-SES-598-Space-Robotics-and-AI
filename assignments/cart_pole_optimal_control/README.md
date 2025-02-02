@@ -1,5 +1,8 @@
 # Cart-Pole Optimal Control Assignment
 
+## Demo Video
+[Watch the demo video](https://drive.google.com/file/d/1UEo88tqG-vV_pkRSoBF_-FWAlsZOLoIb/view?usp=sharing)
+
 ## Overview
 This assignment challenges students to tune and analyze an LQR controller for a cart-pole system subject to earthquake disturbances. The goal is to maintain the pole's stability while keeping the cart within its physical constraints under external perturbations.
 
