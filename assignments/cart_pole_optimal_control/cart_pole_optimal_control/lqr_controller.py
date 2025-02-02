@@ -7,9 +7,9 @@ from sensor_msgs.msg import JointState
 import numpy as np
 from scipy import linalg
 
-class InvertedPendulumLQRController(Node):
+class CartPoleLQRController(Node):
     def __init__(self):
-        super().__init__('inverted_pendulum_lqr_controller')
+        super().__init__('cart_pole_lqr_controller')
         
         # System parameters
         self.M = 1.0  # Mass of cart (kg)
@@ -49,7 +49,7 @@ class InvertedPendulumLQRController(Node):
         # Create publishers and subscribers
         self.cart_cmd_pub = self.create_publisher(
             Float64, 
-            '/model/inverted_pendulum/joint/cart_to_base/cmd_force', 
+            '/model/cart_pole/joint/cart_to_base/cmd_force', 
             10
         )
         
@@ -59,7 +59,7 @@ class InvertedPendulumLQRController(Node):
         
         self.joint_state_sub = self.create_subscription(
             JointState,
-            '/world/empty/model/inverted_pendulum/joint_state',
+            '/world/empty/model/cart_pole/joint_state',
             self.joint_state_callback,
             10
         )
@@ -67,7 +67,7 @@ class InvertedPendulumLQRController(Node):
         # Control loop timer
         self.timer = self.create_timer(0.01, self.control_loop)
         
-        self.get_logger().info('Inverted Pendulum LQR Controller initialized')
+        self.get_logger().info('Cart-Pole LQR Controller initialized')
     
     def compute_lqr_gain(self):
         """Compute the LQR gain matrix K."""
@@ -125,7 +125,7 @@ class InvertedPendulumLQRController(Node):
 
 def main(args=None):
     rclpy.init(args=args)
-    controller = InvertedPendulumLQRController()
+    controller = CartPoleLQRController()
     rclpy.spin(controller)
     controller.destroy_node()
     rclpy.shutdown()

@@ -6,8 +6,8 @@ from launch_ros.substitutions import FindPackageShare
 import os
 
 def generate_launch_description():
-    pkg_share = FindPackageShare('inverted_pendulum_optimal_control').find('inverted_pendulum_optimal_control')
-    urdf_model_path = os.path.join(pkg_share, 'models', 'inverted_pendulum', 'model.urdf')
+    pkg_share = FindPackageShare('cart_pole_optimal_control').find('cart_pole_optimal_control')
+    urdf_model_path = os.path.join(pkg_share, 'models', 'cart_pole', 'model.urdf')
     
     # Create and return launch description
     return LaunchDescription([
@@ -23,7 +23,7 @@ def generate_launch_description():
             executable='create',
             arguments=[
                 '-topic', 'robot_description',
-                '-name', 'inverted_pendulum',
+                '-name', 'cart_pole',
                 '-allow_renaming', 'true'
             ],
             output='screen'
@@ -37,9 +37,9 @@ def generate_launch_description():
             output='screen',
             arguments=[
                 # Cart force command (ROS -> Gazebo)
-                '/model/inverted_pendulum/joint/cart_to_base/cmd_force@std_msgs/msg/Float64]gz.msgs.Double',
+                '/model/cart_pole/joint/cart_to_base/cmd_force@std_msgs/msg/Float64]gz.msgs.Double',
                 # Joint states (Gazebo -> ROS)
-                '/world/empty/model/inverted_pendulum/joint_state@sensor_msgs/msg/JointState[ignition.msgs.Model',
+                '/world/empty/model/cart_pole/joint_state@sensor_msgs/msg/JointState[ignition.msgs.Model',
                 # Clock (Gazebo -> ROS)
                 '/clock@rosgraph_msgs/msg/Clock[ignition.msgs.Clock'
             ],
@@ -61,7 +61,7 @@ def generate_launch_description():
 
         # State Republisher
         Node(
-            package='inverted_pendulum_optimal_control',
+            package='cart_pole_optimal_control',
             executable='state_republisher',
             name='state_republisher',
             output='screen'
@@ -69,7 +69,7 @@ def generate_launch_description():
 
         # Force Visualizer
         Node(
-            package='inverted_pendulum_optimal_control',
+            package='cart_pole_optimal_control',
             executable='force_visualizer',
             name='force_visualizer',
             output='screen'
@@ -77,7 +77,7 @@ def generate_launch_description():
 
         # LQR Controller
         Node(
-            package='inverted_pendulum_optimal_control',
+            package='cart_pole_optimal_control',
             executable='lqr_controller',
             name='lqr_controller',
             output='screen'
@@ -85,7 +85,7 @@ def generate_launch_description():
 
         # Earthquake Force Generator
         Node(
-            package='inverted_pendulum_optimal_control',
+            package='cart_pole_optimal_control',
             executable='earthquake_force_generator',
             name='earthquake_force_generator',
             output='screen',

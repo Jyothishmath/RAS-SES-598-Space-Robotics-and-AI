@@ -1,7 +1,7 @@
-# Inverted Pendulum Optimal Control Assignment
+# Cart-Pole Optimal Control Assignment
 
 ## Overview
-This assignment challenges students to tune and analyze an LQR controller for an inverted pendulum system subject to earthquake disturbances. The goal is to maintain the pendulum's stability while keeping the cart within its physical constraints under external perturbations.
+This assignment challenges students to tune and analyze an LQR controller for a cart-pole system subject to earthquake disturbances. The goal is to maintain the pole's stability while keeping the cart within its physical constraints under external perturbations.
 
 ## System Description
 
@@ -102,7 +102,7 @@ git clone <repository_url>
 
 # Build the package
 cd ~/ros2_ws
-colcon build --packages-select inverted_pendulum_optimal_control
+colcon build --packages-select cart_pole_optimal_control
 ```
 
 ### Running the Simulation
@@ -111,7 +111,7 @@ colcon build --packages-select inverted_pendulum_optimal_control
 source ~/ros2_ws/install/setup.bash
 
 # Launch the simulation with visualization
-ros2 launch inverted_pendulum_optimal_control inverted_pendulum_rviz.launch.py
+ros2 launch cart_pole_optimal_control cart_pole_rviz.launch.py
 ```
 
 This will start:

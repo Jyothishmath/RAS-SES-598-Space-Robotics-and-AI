@@ -27,7 +27,7 @@ class StateRepublisher(Node):
         # Subscribe to Gazebo joint states
         self.gz_joint_sub = self.create_subscription(
             JointState,
-            '/world/empty/model/inverted_pendulum/joint_state',
+            '/world/empty/model/cart_pole/joint_state',
             self.joint_state_callback,
             sensor_qos
         )

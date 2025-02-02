@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<robot name="inverted_pendulum">
+<robot name="cart_pole">
     <!-- World Link (dummy root) -->
     <link name="world"/>
 
@@ -118,10 +118,10 @@
         <material>Gazebo/Blue</material>
     </gazebo>
     <gazebo reference="world">
-<gui>
-  <camera>
-    <pose>5 0 1.5 0 1.57 0</pose>
-  </camera>
-</gui>
+        <gui>
+            <camera>
+                <pose>5 0 1.5 0 1.57 0</pose>
+            </camera>
+        </gui>
     </gazebo>
 </robot> 

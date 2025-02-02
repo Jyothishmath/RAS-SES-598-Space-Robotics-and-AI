@@ -24,7 +24,7 @@ class ForceVisualizer(Node):
         # Subscribe to control force command
         self.force_sub = self.create_subscription(
             Float64,
-            '/model/inverted_pendulum/joint/cart_to_base/cmd_force',
+            '/model/cart_pole/joint/cart_to_base/cmd_force',
             self.control_force_callback,
             10)
             

@@ -20,7 +20,7 @@ class EarthquakeForceGenerator(Node):
         # Publisher for the cart force
         self.force_publisher = self.create_publisher(
             Float64, 
-            '/model/inverted_pendulum/joint/cart_to_base/cmd_force',
+            '/model/cart_pole/joint/cart_to_base/cmd_force',
             qos_profile
         )
         
@@ -32,8 +32,8 @@ class EarthquakeForceGenerator(Node):
         )
         
         # Parameters for earthquake simulation
-        self.declare_parameter('base_amplitude', 5.0)  # Base force amplitude in N
-        self.declare_parameter('frequency_range', [0.5, 2.0])  # Frequency range in Hz
+        self.declare_parameter('base_amplitude', 15.0)  # Base force amplitude in N
+        self.declare_parameter('frequency_range', [0.5, 4.0])  # Frequency range in Hz
         self.declare_parameter('update_rate', 50.0)  # Update rate in Hz
         
         # Timer for force updates
