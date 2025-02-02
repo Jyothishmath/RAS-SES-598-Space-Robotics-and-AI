@@ -117,4 +117,11 @@
     <gazebo reference="pole">
         <material>Gazebo/Blue</material>
     </gazebo>
+    <gazebo reference="world">
+<gui>
+  <camera>
+    <pose>5 0 1.5 0 1.57 0</pose>
+  </camera>
+</gui>
+    </gazebo>
 </robot> 

@@ -14,6 +14,7 @@ setup(
         ('share/' + package_name, ['package.xml']),
         (os.path.join('share', package_name, 'launch'), glob('launch/*.launch.py')),
         (os.path.join('share', package_name, 'models/inverted_pendulum'), glob('models/inverted_pendulum/*.urdf')),
+        (os.path.join('share', package_name, 'config'), glob('config/*.rviz')),
     ],
     install_requires=['setuptools'],
     extras_require={
@@ -28,6 +29,8 @@ setup(
         'console_scripts': [
             'lqr_controller = inverted_pendulum_optimal_control.lqr_controller:main',
             'earthquake_force_generator = inverted_pendulum_optimal_control.earthquake_force_generator:main',
+            'force_visualizer = inverted_pendulum_optimal_control.force_visualizer:main',
+            'state_republisher = inverted_pendulum_optimal_control.state_republisher:main',
         ],
     },
 )
