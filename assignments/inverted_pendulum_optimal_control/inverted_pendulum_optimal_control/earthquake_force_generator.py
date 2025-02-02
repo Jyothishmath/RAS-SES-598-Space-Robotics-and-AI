@@ -20,7 +20,7 @@ class EarthquakeForceGenerator(Node):
         # Publisher for the cart force
         self.force_publisher = self.create_publisher(
             Float64, 
-            '/cart_to_base/force',
+            '/model/inverted_pendulum/joint/cart_to_base/cmd_force',
             qos_profile
         )
         
