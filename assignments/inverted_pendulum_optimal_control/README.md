@@ -123,9 +123,9 @@ colcon build --packages-select inverted_pendulum_optimal_control
 For extra credit implementations, create new branches from `main`.
 
 ### Default Parameters
-The main branch comes with intentionally challenging parameters to encourage proper controller tuning:
+The main branch comes with intentionally challenging controller parameters while maintaining realistic disturbance conditions:
 
-1. Earthquake Disturbances:
+1. Earthquake Disturbances (Realistic Setting):
    ```python
    parameters=[{
        'base_amplitude': 15.0,    # Strong force amplitude (N)
@@ -133,12 +133,72 @@ The main branch comes with intentionally challenging parameters to encourage pro
        'update_rate': 50.0  # Update rate (Hz)
    }]
    ```
-   These parameters create significant disturbances that the default controller may struggle with.
+   These parameters create significant disturbances that reflect real-world conditions:
+   - Forces up to 15N (15x the cart mass)
+   - Wide frequency spectrum (0.5-4.0 Hz)
+   - Random variations in amplitude and phase
+   - Continuous perturbation
 
-2. LQR Controller:
-   * Default gains need tuning
-   * System will be unstable without proper adjustment
-   * Students should systematically tune Q and R matrices
+2. LQR Controller (Requires Tuning):
+   Current settings in main branch:
+   ```python
+   self.Q = np.diag([0.1, 0.1, 1.0, 1.0])  # State cost matrix
+   self.R = np.array([[1.0]])               # Control cost
+   ```
+   These values are intentionally conservative and need tuning:
+   - Low weights on cart position (0.1) → Large position deviations
+   - Low weights on cart velocity (0.1) → Slow response
+   - Moderate weights on pole angle (1.0) → Insufficient stabilization
+   - High control cost (1.0) → Too conservative control action
+
+### Tuning Requirements
+
+Students must tune the LQR gains to achieve:
+
+1. Primary Objectives:
+   - Keep pole angle within ±15 degrees
+   - Maintain cart position within ±2.0m
+   - Achieve stable operation under earthquake forces
+   - Minimize control effort while meeting above constraints
+
+2. Tuning Strategy:
+   - Adjust Q matrix weights to balance:
+     * Cart position control (Q[0,0])
+     * Cart velocity damping (Q[1,1])
+     * Pole angle stabilization (Q[2,2])
+     * Pole angular velocity damping (Q[3,3])
+   - Tune R value to balance:
+     * Control effort (higher R = less aggressive)
+     * Response speed (lower R = faster response)
+     * Disturbance rejection (lower R = better rejection)
+
+3. Performance Metrics:
+   - Maximum pole angle deviation
+   - RMS cart position error
+   - Peak control force used
+   - Time to recover from disturbances
+
+4. Physical Constraints:
+   - Cart position limit: ±2.5m
+   - Cart motor force: Limited by controller
+   - Pole angle: Unconstrained (but should be minimized)
+   - Control rate: 50Hz
+
+### Tips for Tuning
+1. Start with baseline branch parameters to understand good performance
+2. Methodically adjust one weight at a time
+3. Consider the following sequence:
+   - First stabilize pole angle (Q[2,2] and Q[3,3])
+   - Then improve cart position control (Q[0,0] and Q[1,1])
+   - Finally, balance control effort (R)
+4. Test with different initial conditions:
+   - Small pole angle disturbances
+   - Large cart position offsets
+   - Combined angle and position errors
+5. Validate against earthquake disturbances:
+   - Check steady-state behavior
+   - Verify disturbance rejection
+   - Ensure constraints are met
 
 ### Running the Simulation
 ```bash
@@ -261,4 +321,79 @@ You are free to:
 Under the following terms:
 - Attribution — You must give appropriate credit, provide a link to the license, and indicate if changes were made. You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use.
 
-[![Creative Commons License](https://i.creativecommons.org/l/by/4.0/88x31.png)](http://creativecommons.org/licenses/by/4.0/) 
+[![Creative Commons License](https://i.creativecommons.org/l/by/4.0/88x31.png)](http://creativecommons.org/licenses/by/4.0/)
+
+## Reinforcement Learning Implementation (Baseline Branch)
+
+The baseline branch includes a complete RL implementation using Deep Q-Learning (DQN):
+
+### Prerequisites
+Additional requirements for RL:
+```bash
+pip install torch numpy
+```
+
+### RL Architecture
+1. Neural Network:
+   - Input: 4D state vector [x, x_dot, theta, theta_dot]
+   - Hidden layers: 2 layers of 128 units with ReLU
+   - Output: Q-values for 11 discretized force actions
+
+2. Training Parameters:
+   - Episodes: 1000
+   - Max steps per episode: 1000
+   - Batch size: 64
+   - Learning rate: 0.001
+   - Discount factor (gamma): 0.99
+   - Epsilon decay: 0.995 (1.0 → 0.01)
+   - Memory buffer size: 10000 transitions
+
+3. Reward Structure:
+   ```python
+   # Rewards:
+   - Staying upright: +cos(theta)  # +1 when vertical, decreasing as it falls
+   - Position penalty: -|x|        # Penalize cart displacement
+   - Control penalty: -0.1|force|  # Encourage smooth control
+   - Living bonus: +0.1           # Encourage longer episodes
+   - Failure: -100                # |theta| > 15° or |x| > 2.0m
+   ```
+
+### Running RL Training
+```bash
+# Source ROS2
+source ~/ros2_ws/install/setup.bash
+
+# Launch RL training
+ros2 launch inverted_pendulum_optimal_control inverted_pendulum_rl.launch.py
+```
+
+### Training Metrics
+The RL controller publishes metrics every second:
+- Episode number
+- Total steps
+- Current exploration rate (epsilon)
+- Episode reward
+- Best reward achieved
+
+### Monitoring Progress
+1. Console Output:
+   ```bash
+   ros2 topic echo /rl_controller/metrics
+   ```
+
+2. Training Visualization:
+   - RViz shows cart-pole system
+   - Force arrows indicate control actions
+   - Real-time performance monitoring
+
+### Saving and Loading Models
+- Models auto-save every 100 episodes
+- Saved in `trained_models` directory
+- Best model preserved based on reward
+
+### Performance Comparison
+The RL implementation can achieve:
+- Stability in presence of strong disturbances
+- Cart position maintained within ±1.0m
+- Pole angle within ±10 degrees
+- Smooth control actions 
