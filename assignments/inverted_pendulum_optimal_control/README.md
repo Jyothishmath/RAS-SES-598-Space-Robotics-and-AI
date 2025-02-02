@@ -23,27 +23,64 @@ The system includes an earthquake force generator that introduces external distu
 
 ## Assignment Objectives
 
-### Primary Goals
-1. Implement and tune a controller to:
+### Core Requirements
+1. Implement and tune an LQR controller to:
    - Maintain the pendulum in an upright position
    - Keep the cart within its ±2.5m physical limits
-   - Maximize the duration of stable operation under disturbances
-2. Understand and apply robust control principles
-3. Analyze the trade-offs between performance and robustness
+   - Achieve stable operation under earthquake disturbances
+2. Document your LQR tuning approach:
+   - Selection and justification of Q and R matrices
+   - Analysis of performance trade-offs
+   - Experimental results and observations
+3. Analyze system performance:
+   - Duration of stable operation
+   - Maximum cart displacement
+   - Pendulum angle deviation
+   - Control effort analysis
 
 ### Learning Outcomes
-- Understanding of robust control in the presence of external disturbances
-- Experience with LQR tuning for competing objectives
-- Practical implementation of control systems in ROS2 and Gazebo
-- Analysis of system stability under perturbations
+- Understanding of LQR control design and tuning
+- Experience with competing control objectives
+- Practical implementation in ROS2 and Gazebo
+- Analysis of system behavior under disturbances
+
+### Extra Credit Options
+Students can explore more advanced approaches for extra credit:
+
+1. Advanced Control Strategies (up to 15 points):
+   - Implement gain scheduling based on disturbance intensity
+   - Design H∞ control for robust performance
+   - Develop Model Predictive Control (MPC) with constraint handling
+   - Create a hybrid control approach combining multiple strategies
+
+2. Learning and Adaptation (up to 10 points):
+   - Implement online parameter adaptation
+   - Add disturbance learning and prediction
+   - Develop adaptive gain tuning
+
+3. Advanced Analysis (up to 5 points):
+   - Frequency domain analysis of disturbance rejection
+   - Robustness margin calculations
+   - Comparative analysis of different control strategies
 
 ## Implementation
 
-### Controller
-The base implementation provides an LQR controller (`lqr_controller.py`) that students will tune. Key aspects:
-- State feedback control
-- Adjustable gains for different state variables
-- Balance between pendulum stability and cart position constraints
+### Core Controller Implementation
+The base implementation provides an LQR controller (`lqr_controller.py`) that students will tune. Focus areas:
+- State feedback gain selection
+- Q and R matrix tuning
+- Balance between competing objectives:
+  * Pendulum stabilization
+  * Cart position constraints
+  * Control effort minimization
+
+### Extra Credit Implementation Guidelines
+If pursuing extra credit options:
+1. Maintain the base LQR implementation as a benchmark
+2. Create separate controller variants for each approach
+3. Provide comparative analysis with the base LQR solution
+4. Document additional theoretical background
+5. Include failure cases and limitations in analysis
 
 ### Earthquake Disturbance
 The earthquake generator (`earthquake_force_generator.py`) provides realistic disturbances:
@@ -91,10 +128,28 @@ ros2 launch inverted_pendulum_optimal_control inverted_pendulum.launch.py
    ```
 
 ## Evaluation Criteria
-1. Duration of stable operation under disturbances
-2. Maximum cart displacement from center
-3. Average pendulum angle deviation from vertical
-4. Quality of controller implementation and tuning strategy
+### Core Assignment (100 points)
+1. LQR Implementation and Tuning (40 points)
+   - Correct implementation of LQR control
+   - Well-justified Q and R matrix selection
+   - Proper gain calculation and application
+
+2. Performance Metrics (30 points)
+   - Duration of stable operation
+   - Maximum cart displacement
+   - Average pendulum angle deviation
+   - Control effort efficiency
+
+3. Documentation and Analysis (30 points)
+   - Clear explanation of tuning strategy
+   - Quality of performance analysis
+   - Thoroughness of implementation details
+   - Professional presentation of results
+
+### Extra Credit (up to 30 points)
+- Advanced Control Implementation (15 points)
+- Learning/Adaptation Features (10 points)
+- Advanced Analysis (5 points)
 
 ## Why This is Robust Control
 This assignment exemplifies robust control because:
@@ -107,11 +162,12 @@ This assignment exemplifies robust control because:
 4. The controller must work across a range of disturbance frequencies and amplitudes
 
 ## Tips for Success
-1. Start with conservative controller gains
-2. Analyze the system's natural frequencies
-3. Consider the trade-off between tight position control and disturbance rejection
-4. Test the controller with different disturbance parameters
-5. Document your tuning strategy and results
+1. Focus first on achieving stable LQR control
+2. Start with conservative Q and R matrices
+3. Systematically adjust weights based on performance
+4. Document all tuning decisions and their effects
+5. Only pursue extra credit after achieving solid base performance
+6. Test thoroughly under various disturbance conditions
 
 ## Submission Requirements
 1. Implemented controller code
