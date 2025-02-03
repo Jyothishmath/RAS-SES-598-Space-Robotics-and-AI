@@ -11,7 +11,6 @@ This assignment challenges students to tune and analyze an LQR controller for a 
 ### Physical Setup
 - Inverted pendulum mounted on a cart
 - Cart traversal range: ±2.5m (total range: 5m)
-- Base platform: 5m long, matching cart width
 - Pole length: 1m
 - Cart mass: 1.0 kg
 - Pole mass: 1.0 kg
