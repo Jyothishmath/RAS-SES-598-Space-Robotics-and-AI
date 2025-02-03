@@ -1,6 +1,5 @@
 # Cart-Pole Optimal Control Assignment
 
-## Demo Video
 [Watch the demo video](https://drive.google.com/file/d/1UEo88tqG-vV_pkRSoBF_-FWAlsZOLoIb/view?usp=sharing)
 
 ## Overview
