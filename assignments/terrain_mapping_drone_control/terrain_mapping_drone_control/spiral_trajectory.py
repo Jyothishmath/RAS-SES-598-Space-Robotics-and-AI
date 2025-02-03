@@ -48,7 +48,7 @@ class SpiralTrajectory(Node):
         
         # Spiral parameters
         self.INITIAL_HEIGHT = 50.0  # meters
-        self.SPIRAL_DIAMETER = 10.0  # meters
+        self.SPIRAL_DIAMETER = 50.0  # meters
         self.DESCENT_RATE = 0.5     # m/s
         self.SPIRAL_PERIOD = 20.0   # seconds for one complete revolution
         self.MIN_HEIGHT = 5.0       # minimum height before landing
