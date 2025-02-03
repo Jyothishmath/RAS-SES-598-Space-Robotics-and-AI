@@ -1,4 +1,4 @@
-from setuptools import setup
+from setuptools import setup, find_packages
 import os
 from glob import glob
 
@@ -7,7 +7,7 @@ package_name = 'terrain_mapping_drone_control'
 setup(
     name=package_name,
     version='0.0.1',
-    packages=[package_name],
+    packages=find_packages(),
     data_files=[
         ('share/ament_index/resource_index/packages',
             ['resource/' + package_name]),
@@ -19,7 +19,7 @@ setup(
     zip_safe=True,
     maintainer='Your Name',
     maintainer_email='your.email@example.com',
-    description='A ROS2 package for controlling PX4 drone to perform terrain mapping using ORBSLAM3',
+    description='A ROS2 package for controlling PX4 drone in spiral trajectory',
     license='Apache License 2.0',
     tests_require=['pytest'],
     entry_points={

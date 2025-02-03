@@ -1,0 +1,13 @@
+/**:
+  ros__parameters:
+    # Spiral trajectory parameters
+    initial_height: 50.0  # meters
+    spiral_diameter: 10.0  # meters
+    descent_rate: 0.5     # m/s
+    angular_velocity: 0.5 # rad/s
+    min_height: 5.0      # minimum height before landing
+
+    # Control parameters
+    height_p_gain: 2.0
+    max_vertical_velocity: 2.0
+    takeoff_velocity: 1.5 
