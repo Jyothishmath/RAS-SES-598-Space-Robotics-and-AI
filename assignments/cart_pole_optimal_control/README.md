@@ -7,7 +7,7 @@
 This assignment challenges students to tune and analyze an LQR controller for a cart-pole system subject to earthquake disturbances. The goal is to maintain the pole's stability while keeping the cart within its physical constraints under external perturbations. The earthquake force generator in this assignment introduces students to simulating and controlling systems under seismic disturbances, which connects to the Virtual Shake Robot covered later in the course. The skills developed here in handling dynamic disturbances and maintaining system stability will be useful for optimal control of space robots, such as Lunar landers or orbital debris removal robots.
 
 ## System Description
-
+The assignment is based on the problem formalism here: https://underactuated.mit.edu/acrobot.html#cart_pole
 ### Physical Setup
 - Inverted pendulum mounted on a cart
 - Cart traversal range: ±2.5m (total range: 5m)
