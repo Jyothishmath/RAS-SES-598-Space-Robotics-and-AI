@@ -30,6 +30,9 @@ def generate_launch_description():
         os.environ['GZ_SIM_RESOURCE_PATH'] += os.pathsep + gz_model_path
     else:
         os.environ['GZ_SIM_RESOURCE_PATH'] = gz_model_path
+
+    # Set initial drone pose (x y z roll pitch yaw)
+    os.environ['PX4_GZ_MODEL_POSE'] = '5 5 1.2 0 0 0'
     
     # Launch PX4 SITL with x500_gimbal
     px4_sitl = ExecuteProcess(
@@ -47,7 +50,10 @@ def generate_launch_description():
             '-name', 'terrain',
             '-x', '0',
             '-y', '0',
-            '-z', '0'
+            '-z', '0',     # 5 meters below ground level
+            '-R', '1.5708', # Roll (90 degrees)
+            '-P', '0',      # Pitch
+            '-Y', '1.5708'  # Yaw (90 degrees counterclockwise)
         ],
         output='screen'
     )
