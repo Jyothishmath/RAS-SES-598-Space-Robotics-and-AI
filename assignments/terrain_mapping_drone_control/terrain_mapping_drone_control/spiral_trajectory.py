@@ -56,10 +56,10 @@ class SpiralTrajectory(Node):
         self.start_time = time.time()
         
         # Spiral parameters
-        self.INITIAL_HEIGHT = 50.0  # meters
-        self.SPIRAL_DIAMETER = 50.0  # meters
-        self.DESCENT_RATE = 0.5     # m/s
-        self.SPIRAL_PERIOD = 20.0   # seconds for one complete revolution
+        self.INITIAL_HEIGHT = 20.0  # meters
+        self.SPIRAL_DIAMETER = 35.0  # meters
+        self.DESCENT_RATE = 0.5    # m/s
+        self.SPIRAL_PERIOD = 10.0   # seconds for one complete revolution
         self.MIN_HEIGHT = 5.0       # minimum height before landing
         self.HEIGHT_REACHED_THRESHOLD = 0.3  # meters
         

@@ -13,9 +13,11 @@ setup(
             ['resource/' + package_name]),
         ('share/' + package_name, ['package.xml']),
         ('share/' + package_name + '/launch',
-            ['launch/terrain_mapping.launch.py']),
-        ('share/' + package_name + '/config',
-            ['config/terrain_mapping_params.yaml']),
+            glob('launch/*.launch.py')),
+        ('share/' + package_name + '/config', [
+            'config/terrain_mapping_params.yaml',
+            'config/drone_viz.rviz'
+        ]),
         ('share/' + package_name + '/models/terrain', [
             'models/terrain/model.config',
             'models/terrain/model.sdf'
@@ -37,6 +39,8 @@ setup(
     entry_points={
         'console_scripts': [
             'spiral_trajectory = terrain_mapping_drone_control.spiral_trajectory:main',
+            'feature_tracker = terrain_mapping_drone_control.feature_tracker:main',
+            'pose_visualizer = terrain_mapping_drone_control.pose_visualizer:main',
         ],
     },
 ) 
