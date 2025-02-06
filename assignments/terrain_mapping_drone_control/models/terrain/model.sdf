@@ -2,19 +2,24 @@
 <sdf version="1.8">
     <model name="terrain">
         <static>true</static>
-        <pose>0 0 0 0 0 1.5708</pose>  <!-- 90 degrees = 1.5708 radians -->
+        <pose>1000 0 0 0 1.5708 0</pose>  <!-- x y z roll(180°) pitch(90°) yaw -->
         <link name="link">
+            <pose>0 0 0 0 0 0</pose>  <!-- link pose relative to model -->
             <visual name="visual">
+                <pose>0 0 0 0 0 0</pose>  <!-- visual pose relative to link -->
                 <geometry>
                     <mesh>
-                        <uri>model://terrain/artburysol175.obj</uri>
+                        <uri>meshes/artburysol175.obj</uri>
+                        <scale>1.0 1.0 1.0</scale>
                     </mesh>
                 </geometry>
             </visual>
             <collision name="collision">
+                <pose>0 0 0 0 0 0</pose>  <!-- collision pose relative to link -->
                 <geometry>
                     <mesh>
-                        <uri>model://terrain/artburysol175.obj</uri>
+                        <uri>meshes/artburysol175.obj</uri>
+                        <scale>1.0 1.0 1.0</scale>
                     </mesh>
                 </geometry>
             </collision>

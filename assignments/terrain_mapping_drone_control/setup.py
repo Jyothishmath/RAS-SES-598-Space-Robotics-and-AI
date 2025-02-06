@@ -20,6 +20,10 @@ setup(
             'models/terrain/model.config',
             'models/terrain/model.sdf'
         ]),
+        ('share/' + package_name + '/models/terrain/meshes', [
+            'models/terrain/meshes/artburysol175.obj',
+            'models/terrain/meshes/artburysol175.mtl'
+        ]),
         ('lib/' + package_name, [
             'scripts/spiral_trajectory'  # This is where we'll put our executable script
         ]),

@@ -19,11 +19,17 @@ def generate_launch_description():
     model_path = os.path.join(pkg_share, 'models')
     config_path = os.path.join(pkg_share, 'config')
     
-    # Set Gazebo model path
-    if 'GZ_SIM_RESOURCE_PATH' in os.environ:
-        os.environ['GZ_SIM_RESOURCE_PATH'] += os.pathsep + model_path
+    # Set Gazebo model and resource paths
+    gz_model_path = os.path.join(pkg_share, 'models')
+    if 'GZ_SIM_MODEL_PATH' in os.environ:
+        os.environ['GZ_SIM_MODEL_PATH'] += os.pathsep + gz_model_path
     else:
-        os.environ['GZ_SIM_RESOURCE_PATH'] = model_path
+        os.environ['GZ_SIM_MODEL_PATH'] = gz_model_path
+
+    if 'GZ_SIM_RESOURCE_PATH' in os.environ:
+        os.environ['GZ_SIM_RESOURCE_PATH'] += os.pathsep + gz_model_path
+    else:
+        os.environ['GZ_SIM_RESOURCE_PATH'] = gz_model_path
     
     # Launch PX4 SITL with x500_gimbal
     px4_sitl = ExecuteProcess(
@@ -60,17 +66,13 @@ def generate_launch_description():
             '/camera@sensor_msgs/msg/Image@gz.msgs.Image',
             '/depth_camera@sensor_msgs/msg/Image@gz.msgs.Image',
             '/camera_info@sensor_msgs/msg/CameraInfo@gz.msgs.CameraInfo',
-            '/depth_camera/points@sensor_msgs/msg/PointCloud2@gz.msgs.PointCloud'
+            # Removed problematic PointCloud topic
         ],
-        output='screen'
-    )
-
-    # Launch the spiral trajectory controller
-    controller_node = Node(
-        package='terrain_mapping_drone_control',
-        executable='spiral_trajectory',
-        name='spiral_trajectory',
-        parameters=[os.path.join(config_path, 'terrain_mapping_params.yaml')],
+        remappings=[
+            ('/camera', '/drone_camera'),
+            ('/depth_camera', '/drone_depth_camera'),
+            ('/camera_info', '/drone_camera_info')
+        ],
         output='screen'
     )
 
@@ -85,14 +87,8 @@ def generate_launch_description():
         actions=[bridge]
     )
 
-    delayed_controller = TimerAction(
-        period=10.0,  # 10 second delay
-        actions=[controller_node]
-    )
-
     return LaunchDescription([
         px4_sitl,
         delayed_terrain,
-        delayed_bridge,
-        delayed_controller
+        delayed_bridge
     ])
