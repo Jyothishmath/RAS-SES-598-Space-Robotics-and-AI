@@ -2,6 +2,7 @@
 <sdf version="1.8">
     <model name="terrain">
         <static>true</static>
+        <pose>0 0 0 0 0 1.5708</pose>  <!-- 90 degrees = 1.5708 radians -->
         <link name="link">
             <visual name="visual">
                 <geometry>

@@ -6,17 +6,24 @@ from launch.actions import DeclareLaunchArgument, ExecuteProcess, IncludeLaunchD
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import PathJoinSubstitution, LaunchConfiguration
 from launch_ros.substitutions import FindPackageShare
+from ament_index_python.packages import get_package_share_directory
 import os
 
 def generate_launch_description():
     """Generate launch description for terrain mapping with camera bridge."""
     
-    # Get the path to the terrain model
-    pkg_share = os.path.join(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
+    # Get the package share directory
+    pkg_share = get_package_share_directory('terrain_mapping_drone_control')
+    
+    # Get paths
     model_path = os.path.join(pkg_share, 'models')
+    config_path = os.path.join(pkg_share, 'config')
     
     # Set Gazebo model path
-    os.environ['GZ_SIM_RESOURCE_PATH'] = model_path
+    if 'GZ_SIM_RESOURCE_PATH' in os.environ:
+        os.environ['GZ_SIM_RESOURCE_PATH'] += os.pathsep + model_path
+    else:
+        os.environ['GZ_SIM_RESOURCE_PATH'] = model_path
     
     # Launch PX4 SITL with x500_gimbal
     px4_sitl = ExecuteProcess(
@@ -39,24 +46,31 @@ def generate_launch_description():
         output='screen'
     )
     
-    # Bridge node for gimbal topics - start after a delay to ensure PX4 is up
+    # Bridge node for gimbal and camera topics
     bridge = Node(
         package='ros_gz_bridge',
         executable='parameter_bridge',
         name='bridge',
         arguments=[
+            # Gimbal control topics
             '/model/x500_gimbal_0/command/gimbal_roll@std_msgs/msg/Float64@gz.msgs.Double',
             '/model/x500_gimbal_0/command/gimbal_pitch@std_msgs/msg/Float64@gz.msgs.Double',
-            '/model/x500_gimbal_0/command/gimbal_yaw@std_msgs/msg/Float64@gz.msgs.Double'
+            '/model/x500_gimbal_0/command/gimbal_yaw@std_msgs/msg/Float64@gz.msgs.Double',
+            # Camera topics
+            '/camera@sensor_msgs/msg/Image@gz.msgs.Image',
+            '/depth_camera@sensor_msgs/msg/Image@gz.msgs.Image',
+            '/camera_info@sensor_msgs/msg/CameraInfo@gz.msgs.CameraInfo',
+            '/depth_camera/points@sensor_msgs/msg/PointCloud2@gz.msgs.PointCloud'
         ],
         output='screen'
     )
 
-    # Launch the spiral trajectory controller with a delay
+    # Launch the spiral trajectory controller
     controller_node = Node(
         package='terrain_mapping_drone_control',
         executable='spiral_trajectory',
         name='spiral_trajectory',
+        parameters=[os.path.join(config_path, 'terrain_mapping_params.yaml')],
         output='screen'
     )
 
