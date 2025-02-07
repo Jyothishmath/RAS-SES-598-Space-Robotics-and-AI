@@ -26,9 +26,6 @@ setup(
             'models/terrain/meshes/artburysol175.obj',
             'models/terrain/meshes/artburysol175.mtl'
         ]),
-        ('lib/' + package_name, [
-            'scripts/spiral_trajectory'  # This is where we'll put our executable script
-        ]),
     ],
     install_requires=['setuptools'],
     zip_safe=True,
